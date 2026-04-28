@@ -4,11 +4,11 @@
 :root {
   --bg: #f0f2f5;
   --surface: #ffffff;
-  --sidebar-bg: #1a1f36;
-  --sidebar-text: #a0aec0;
+  --sidebar-bg: #042f2e;
+  --sidebar-text: #99f6e4;
   --sidebar-active: #ffffff;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
   --danger: #ef4444;
   --danger-hover: #dc2626;
   --text: #1a202c;

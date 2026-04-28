@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyCRM</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">MyCRM</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-view="contacts">
+        <span class="nav-icon">👤</span> Contacts
+      </button>
+      <button class="nav-btn" data-view="activities">
+        <span class="nav-icon">📋</span> Activities
+      </button>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="topbar">
+      <h1 class="topbar-title" id="view-title">Contacts</h1>
+      <div class="topbar-actions">
+        <button class="btn-export" id="export-btn">⬇ Export Excel</button>
+        <button class="btn-primary" id="add-btn">+ Add</button>
+      </div>
+    </header>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search..." />
+    </div>
+
+    <!-- VIEWS -->
+    <section id="view-contacts" class="view active">
+      <div id="contacts-list" class="card-grid"></div>
+      <p id="contacts-empty" class="empty-msg hidden">No contacts yet. Click "+ Add" to get started.</p>
+    </section>
+
+    <section id="view-activities" class="view">
+      <div id="activities-list" class="activity-feed"></div>
+      <p id="activities-empty" class="empty-msg hidden">No activities recorded yet.</p>
+    </section>
+
+  </main>
+
+  <!-- CONTACT MODAL -->
+  <div id="modal-contact" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-contact-title">New Contact</h2>
+        <button class="modal-close" data-modal="modal-contact">✕</button>
+      </div>
+      <form id="form-contact">
+        <label>Name *
+          <input type="text" id="contact-name" placeholder="e.g. John Smith" required />
+        </label>
+        <label>Company
+          <input type="text" id="contact-company" placeholder="e.g. Acme Inc." />
+        </label>
+        <label>Email
+          <input type="email" id="contact-email" placeholder="e.g. john@acme.com" />
+        </label>
+        <label>Phone
+          <input type="tel" id="contact-phone" placeholder="e.g. +1 555 123 4567" />
+        </label>
+        <label>Description / Notes
+          <textarea id="contact-desc" rows="3" placeholder="Useful information about this contact..."></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" data-modal="modal-contact">Cancel</button>
+          <button type="submit" class="btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ACTIVITY MODAL -->
+  <div id="modal-activity" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>New Activity</h2>
+        <button class="modal-close" data-modal="modal-activity">✕</button>
+      </div>
+      <form id="form-activity">
+        <label>Type *
+          <select id="activity-type" required>
+            <option value="">— Select —</option>
+            <option value="call">📞 Call</option>
+            <option value="email">✉️ Email</option>
+            <option value="meeting">🤝 Meeting</option>
+            <option value="note">📝 Note</option>
+            <option value="offer">💼 Offer</option>
+          </select>
+        </label>
+        <label>Associated Contact *
+          <select id="activity-contact" required>
+            <option value="">— Select contact —</option>
+          </select>
+        </label>
+        <label>Date
+          <input type="date" id="activity-date" />
+        </label>
+        <label>Description *
+          <textarea id="activity-desc" rows="3" placeholder="Describe the activity..." required></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" data-modal="modal-activity">Cancel</button>
+          <button type="submit" class="btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONTACT DETAIL MODAL -->
+  <div id="modal-detail" class="modal-overlay hidden">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h2 id="detail-name">—</h2>
+        <button class="modal-close" data-modal="modal-detail">✕</button>
+      </div>
+      <div id="detail-info" class="detail-info"></div>
+      <div class="detail-section">
+        <div class="detail-section-header">
+          <h3>Activities</h3>
+          <button class="btn-primary btn-sm" id="detail-add-activity">+ Activity</button>
+        </div>
+        <div id="detail-activities" class="activity-feed"></div>
+        <p id="detail-empty" class="empty-msg hidden">No activities for this contact.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" id="detail-delete">Delete contact</button>
+        <button class="btn-secondary" id="detail-edit">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

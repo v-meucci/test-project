@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,10 +17,10 @@
     </div>
     <nav class="sidebar-nav">
       <button class="nav-btn active" data-view="contacts">
-        <span class="nav-icon">👤</span> Contatti
+        <span class="nav-icon">👤</span> Contacts
       </button>
       <button class="nav-btn" data-view="activities">
-        <span class="nav-icon">📋</span> Attività
+        <span class="nav-icon">📋</span> Activities
       </button>
     </nav>
   </aside>
@@ -30,100 +30,100 @@
 
     <!-- HEADER -->
     <header class="topbar">
-      <h1 class="topbar-title" id="view-title">Contatti</h1>
+      <h1 class="topbar-title" id="view-title">Contacts</h1>
       <div class="topbar-actions">
-        <button class="btn-export" id="export-btn">⬇ Esporta Excel</button>
-        <button class="btn-primary" id="add-btn">+ Aggiungi</button>
+        <button class="btn-export" id="export-btn">⬇ Export Excel</button>
+        <button class="btn-primary" id="add-btn">+ Add</button>
       </div>
     </header>
 
     <!-- SEARCH -->
     <div class="search-bar">
-      <input type="text" id="search-input" placeholder="Cerca..." />
+      <input type="text" id="search-input" placeholder="Search..." />
     </div>
 
     <!-- VIEWS -->
     <section id="view-contacts" class="view active">
       <div id="contacts-list" class="card-grid"></div>
-      <p id="contacts-empty" class="empty-msg hidden">Nessun contatto. Clicca "+ Aggiungi" per iniziare.</p>
+      <p id="contacts-empty" class="empty-msg hidden">No contacts yet. Click "+ Add" to get started.</p>
     </section>
 
     <section id="view-activities" class="view">
       <div id="activities-list" class="activity-feed"></div>
-      <p id="activities-empty" class="empty-msg hidden">Nessuna attività registrata.</p>
+      <p id="activities-empty" class="empty-msg hidden">No activities recorded yet.</p>
     </section>
 
   </main>
 
-  <!-- MODAL CONTATTO -->
+  <!-- CONTACT MODAL -->
   <div id="modal-contact" class="modal-overlay hidden">
     <div class="modal">
       <div class="modal-header">
-        <h2 id="modal-contact-title">Nuovo Contatto</h2>
+        <h2 id="modal-contact-title">New Contact</h2>
         <button class="modal-close" data-modal="modal-contact">✕</button>
       </div>
       <form id="form-contact">
-        <label>Nome *
-          <input type="text" id="contact-name" placeholder="es. Mario Rossi" required />
+        <label>Name *
+          <input type="text" id="contact-name" placeholder="e.g. John Smith" required />
         </label>
-        <label>Azienda
-          <input type="text" id="contact-company" placeholder="es. Acme Srl" />
+        <label>Company
+          <input type="text" id="contact-company" placeholder="e.g. Acme Inc." />
         </label>
         <label>Email
-          <input type="email" id="contact-email" placeholder="es. mario@acme.it" />
+          <input type="email" id="contact-email" placeholder="e.g. john@acme.com" />
         </label>
-        <label>Telefono
-          <input type="tel" id="contact-phone" placeholder="es. +39 02 1234567" />
+        <label>Phone
+          <input type="tel" id="contact-phone" placeholder="e.g. +1 555 123 4567" />
         </label>
-        <label>Descrizione / Note
-          <textarea id="contact-desc" rows="3" placeholder="Informazioni utili su questo contatto..."></textarea>
+        <label>Description / Notes
+          <textarea id="contact-desc" rows="3" placeholder="Useful information about this contact..."></textarea>
         </label>
         <div class="modal-actions">
-          <button type="button" class="btn-secondary" data-modal="modal-contact">Annulla</button>
-          <button type="submit" class="btn-primary">Salva</button>
+          <button type="button" class="btn-secondary" data-modal="modal-contact">Cancel</button>
+          <button type="submit" class="btn-primary">Save</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL ATTIVITÀ -->
+  <!-- ACTIVITY MODAL -->
   <div id="modal-activity" class="modal-overlay hidden">
     <div class="modal">
       <div class="modal-header">
-        <h2>Nuova Attività</h2>
+        <h2>New Activity</h2>
         <button class="modal-close" data-modal="modal-activity">✕</button>
       </div>
       <form id="form-activity">
-        <label>Tipo *
+        <label>Type *
           <select id="activity-type" required>
-            <option value="">— Seleziona —</option>
-            <option value="chiamata">📞 Chiamata</option>
+            <option value="">— Select —</option>
+            <option value="call">📞 Call</option>
             <option value="email">✉️ Email</option>
-            <option value="riunione">🤝 Riunione</option>
-            <option value="nota">📝 Nota</option>
-            <option value="offerta">💼 Offerta</option>
+            <option value="meeting">🤝 Meeting</option>
+            <option value="note">📝 Note</option>
+            <option value="offer">💼 Offer</option>
           </select>
         </label>
-        <label>Contatto associato *
+        <label>Associated Contact *
           <select id="activity-contact" required>
-            <option value="">— Seleziona contatto —</option>
+            <option value="">— Select contact —</option>
           </select>
         </label>
-        <label>Data
+        <label>Date
           <input type="date" id="activity-date" />
         </label>
-        <label>Descrizione *
-          <textarea id="activity-desc" rows="3" placeholder="Descrivi l'attività..." required></textarea>
+        <label>Description *
+          <textarea id="activity-desc" rows="3" placeholder="Describe the activity..." required></textarea>
         </label>
         <div class="modal-actions">
-          <button type="button" class="btn-secondary" data-modal="modal-activity">Annulla</button>
-          <button type="submit" class="btn-primary">Salva</button>
+          <button type="button" class="btn-secondary" data-modal="modal-activity">Cancel</button>
+          <button type="submit" class="btn-primary">Save</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL DETTAGLIO CONTATTO -->
+  <!-- CONTACT DETAIL MODAL -->
   <div id="modal-detail" class="modal-overlay hidden">
     <div class="modal modal-wide">
       <div class="modal-header">
@@ -133,15 +133,15 @@
       <div id="detail-info" class="detail-info"></div>
       <div class="detail-section">
         <div class="detail-section-header">
-          <h3>Attività</h3>
-          <button class="btn-primary btn-sm" id="detail-add-activity">+ Attività</button>
+          <h3>Activities</h3>
+          <button class="btn-primary btn-sm" id="detail-add-activity">+ Activity</button>
         </div>
         <div id="detail-activities" class="activity-feed"></div>
-        <p id="detail-empty" class="empty-msg hidden">Nessuna attività per questo contatto.</p>
+        <p id="detail-empty" class="empty-msg hidden">No activities for this contact.</p>
       </div>
       <div class="modal-actions">
-        <button class="btn-danger" id="detail-delete">Elimina contatto</button>
-        <button class="btn-secondary" id="detail-edit">Modifica</button>
+        <button class="btn-danger" id="detail-delete">Delete contact</button>
+        <button class="btn-secondary" id="detail-edit">Edit</button>
       </div>
     </div>
   </div>

@@ -7,11 +7,11 @@ const DB = {
 };
 
 const ACTIVITY_EMOJI = {
-  chiamata: '📞',
+  call: '📞',
   email: '✉️',
-  riunione: '🤝',
-  nota: '📝',
-  offerta: '💼',
+  meeting: '🤝',
+  note: '📝',
+  offer: '💼',
 };
 
 let currentView = 'contacts';
@@ -53,7 +53,7 @@ function switchView(view) {
   currentView = view;
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
-  document.getElementById('view-title').textContent = view === 'contacts' ? 'Contatti' : 'Attività';
+  document.getElementById('view-title').textContent = view === 'contacts' ? 'Contacts' : 'Activities';
   document.getElementById('search-input').value = '';
 
   if (view === 'contacts') renderContacts();
@@ -78,7 +78,7 @@ function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 /* ── Contact Modal ── */
 function openAddContact() {
   editingContactId = null;
-  document.getElementById('modal-contact-title').textContent = 'Nuovo Contatto';
+  document.getElementById('modal-contact-title').textContent = 'New Contact';
   document.getElementById('form-contact').reset();
   openModal('modal-contact');
   document.getElementById('contact-name').focus();
@@ -89,7 +89,7 @@ function openEditContact(id) {
   const c = contacts.find(x => x.id === id);
   if (!c) return;
   editingContactId = id;
-  document.getElementById('modal-contact-title').textContent = 'Modifica Contatto';
+  document.getElementById('modal-contact-title').textContent = 'Edit Contact';
   document.getElementById('contact-name').value = c.name;
   document.getElementById('contact-company').value = c.company || '';
   document.getElementById('contact-email').value = c.email || '';
@@ -110,7 +110,7 @@ function openAddActivity(preselectedContactId = null) {
 function populateContactSelect(selectedId = null) {
   const sel = document.getElementById('activity-contact');
   const contacts = DB.contacts();
-  sel.innerHTML = '<option value="">— Seleziona contatto —</option>';
+  sel.innerHTML = '<option value="">— Select contact —</option>';
   contacts.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c.id;
@@ -135,7 +135,7 @@ function setupForms() {
     openEditContact(detailContactId);
   });
   document.getElementById('detail-delete').addEventListener('click', () => {
-    if (confirm('Vuoi davvero eliminare questo contatto e tutte le sue attività?')) {
+    if (confirm('Are you sure you want to delete this contact and all their activities?')) {
       deleteContact(detailContactId);
       closeModal('modal-detail');
     }
@@ -223,7 +223,7 @@ function renderContacts(filter = '') {
       ${c.company ? `<div class="card-company">${esc(c.company)}</div>` : ''}
       ${c.desc ? `<div class="card-desc">${esc(c.desc)}</div>` : ''}
       <div class="card-footer">
-        <span class="card-badge">${count} attività</span>
+        <span class="card-badge">${count} ${count === 1 ? 'activity' : 'activities'}</span>
         ${c.email ? `<span class="card-tag">✉️ Email</span>` : ''}
       </div>
     `;
@@ -283,10 +283,10 @@ function openDetail(contactId) {
 
   const info = document.getElementById('detail-info');
   info.innerHTML = `
-    ${field('Azienda', c.company)}
+    ${field('Company', c.company)}
     ${field('Email', c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '')}
-    ${field('Telefono', c.phone)}
-    ${field('Note', c.desc)}
+    ${field('Phone', c.phone)}
+    ${field('Notes', c.desc)}
   `;
 
   const acts = DB.activities().filter(a => a.contactId === contactId);
@@ -330,25 +330,25 @@ function setupExport() {
     const activities = DB.activities();
 
     if (contacts.length === 0 && activities.length === 0) {
-      alert('Nessun dato da esportare. Aggiungi prima qualche contatto.');
+      alert('No data to export. Add some contacts first.');
       return;
     }
 
     const wb = XLSX.utils.book_new();
 
-    const contactRows = [['Nome', 'Azienda', 'Email', 'Telefono', 'Note', 'Data creazione']];
+    const contactRows = [['Name', 'Company', 'Email', 'Phone', 'Notes', 'Created at']];
     contacts.forEach(c => contactRows.push([
       c.name, c.company || '', c.email || '', c.phone || '', c.desc || '',
-      new Date(c.createdAt).toLocaleDateString('it-IT'),
+      new Date(c.createdAt).toLocaleDateString('en-US'),
     ]));
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(contactRows), 'Contatti');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(contactRows), 'Contacts');
 
-    const actRows = [['Tipo', 'Contatto', 'Azienda', 'Data', 'Descrizione']];
+    const actRows = [['Type', 'Contact', 'Company', 'Date', 'Description']];
     activities.forEach(a => {
       const c = contacts.find(x => x.id === a.contactId);
       actRows.push([a.type, c ? c.name : '—', c ? (c.company || '') : '', formatDate(a.date), a.desc]);
     });
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(actRows), 'Attività');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(actRows), 'Activities');
 
     XLSX.writeFile(wb, 'MyCRM_export.xlsx');
   });
@@ -375,5 +375,5 @@ function esc(str) {
 function formatDate(d) {
   if (!d) return '';
   const [y, m, day] = d.split('-');
-  return `${day}/${m}/${y}`;
+  return `${m}/${day}/${y}`;
 }

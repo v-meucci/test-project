@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MyCRM</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -30,7 +31,10 @@
     <!-- HEADER -->
     <header class="topbar">
       <h1 class="topbar-title" id="view-title">Contatti</h1>
-      <button class="btn-primary" id="add-btn">+ Aggiungi</button>
+      <div class="topbar-actions">
+        <button class="btn-export" id="export-btn">⬇ Esporta Excel</button>
+        <button class="btn-primary" id="add-btn">+ Aggiungi</button>
+      </div>
     </header>
 
     <!-- SEARCH -->

@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupModals();
   setupForms();
   setupSearch();
+  setupExport();
   renderContacts();
   setTodayDate();
 });
@@ -320,6 +321,37 @@ function openDetail(contactId) {
 function field(label, value) {
   if (!value) return '';
   return `<div class="detail-field"><label>${label}</label><span>${value}</span></div>`;
+}
+
+/* ── Export Excel ── */
+function setupExport() {
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const contacts = DB.contacts();
+    const activities = DB.activities();
+
+    if (contacts.length === 0 && activities.length === 0) {
+      alert('Nessun dato da esportare. Aggiungi prima qualche contatto.');
+      return;
+    }
+
+    const wb = XLSX.utils.book_new();
+
+    const contactRows = [['Nome', 'Azienda', 'Email', 'Telefono', 'Note', 'Data creazione']];
+    contacts.forEach(c => contactRows.push([
+      c.name, c.company || '', c.email || '', c.phone || '', c.desc || '',
+      new Date(c.createdAt).toLocaleDateString('it-IT'),
+    ]));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(contactRows), 'Contatti');
+
+    const actRows = [['Tipo', 'Contatto', 'Azienda', 'Data', 'Descrizione']];
+    activities.forEach(a => {
+      const c = contacts.find(x => x.id === a.contactId);
+      actRows.push([a.type, c ? c.name : '—', c ? (c.company || '') : '', formatDate(a.date), a.desc]);
+    });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(actRows), 'Attività');
+
+    XLSX.writeFile(wb, 'MyCRM_export.xlsx');
+  });
 }
 
 /* ── Search ── */
